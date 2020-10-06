@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Time sheet </title>
+<script>
+   function InsertRecord()  
+        {  
+            var date = document.getElementById('date').value;  
+            var start = document.getElementById('start').value;  
+            var end = document.getElementById('end').value;  
+            var hours = document.getElementById('hours').value;
+  	    var p_name = document.getElementById('p_name').value;
+            if (date.length != 0 || start.length !=0 || end.length !=0|| hours.length !=0)  
+            {  
+                var connection = new ActiveXObject("ADODB.Connection");  
+                var connectionstring = "Data Source=.;Initial Catalog=EmpDetail;Persist Security Info=True;User ID=sa;Password=****;Provider=SQLOLEDB";  
+                connection.Open(connectionstring);  
+                var rs = new ActiveXObject("ADODB.Recordset");  
+                rs.Open("insert into Emp_Info values('" + date + "','" + start + "','" + end + "','" + hours + "')", connection);  
+                alert("Insert Record Successfuly");  
+                date.value = " ";  
+                connection.close();  
+            }  
+            else  
+            {              
+                alert("Please enter all details!!! ");  
+            }  
+        }  
+        function ShowAll()  
+        {  
+                var connection = new ActiveXObject("ADODB.Connection");  
+                var connectionstring = "Data Source=.;Initial Catalog=EmpDetail;Persist Security Info=True;User ID=sa;Password=****;Provider=SQLOLEDB";  
+
+                connection.Open(connectionstring);  
+                var rs = new ActiveXObject("ADODB.Recordset");  
+                rs.Open("select * from Emp_Info ", connection);  
+                rs.MoveFirst();  
+                var span = document.createElement("span");  
+                span.style.color = "Blue";  
+                span.innerText = "  Date " + "  Start " + "  End" + " Hours " + " Project Name";  
+                document.body.appendChild(span);  
+                while (!rs.eof)  
+                {  
+                    var span = document.createElement("span");  
+                    span.style.color = "green";  
+                    span.innerText = "\n " + rs.fields(0) + " |  " + rs.fields(1) + " |  " + rs.fields(2) + " |  " + rs.fields(3) + " |  " + rs.field(4);  
+                    document.body.appendChild(span);  
+                    rs.MoveNext();  
+                }  
+                rs.close();  
+                connection.close();  
+            }   
+    </script>  
+<style>
+body {
+  color:#08ffd1;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #6abadeba;
+}
+
+{
+  box-sizing: border-box;
+}
+
+.sheet {
+  padding: 16px;
+  background-color: #23463f;
+}
+</style>
+</head>
+<body>
+ <div class="sheet">
+<h1>Time Sheet</h1>
+    <p>Please fill in the time of your project.</p>
+    <hr>
+<form>
+
+	  <p><b>Date<br><br>
+                <input type="date" id="date">
+            </p>
+            <p>Start<br><br>
+                <input type="time" id="start" >
+            </p>
+            <p>End<br><br>
+                <input type="time" id="end" >
+            </p>
+            <p>Hours<br><br>
+                <input type="number" id="hours">
+            </p>
+            <p>Project name<br><br></b>
+                <select id="type_1" id="p_name">
+                    <option value="a" selected>project 1</option>
+                    <option value="b">project 2</option>
+		    <option value="c">project 3</option>
+                    <option value="d">project 4</option>
+		    <option value="e">project 5</option>
+                    <option value="f">project 6</option>
+                </select>
+            
+
+            </p>
+<br><br><br><br>
+         
+
+      
+<input id="ShowRecord" type="button" value="Insert" onclick="InsertRecord()" />   
+    <input id="showall" type="button" value="Show All Record" onclick="ShowAll()" /></div>  
+
+</form>
+</div>
+</body>
+</html>
